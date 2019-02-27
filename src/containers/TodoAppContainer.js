@@ -3,21 +3,33 @@ import {connect} from 'react-redux'
 
 class TodoAppContainer extends Component {
 
-    addTodo () {
-        this.props.addTodo('homework')
+    constructor(props) {
+        super(props)
+        this.state = {value: ''}
+    }
+
+    handleFormChange = (e) => {
+        this.setState({value: e.target.value})
+    }
+
+    handleFormSubmission = (e) => {
+        e.preventDefault()
+        this.props.addTodo(this.state.value)
+        this.state.value = ''
     }
 
     render() {
-        // console.log('props',this.props)
-        console.log('todos',this.props.todos)
-        console.log('addtodo', this.addTodo)
         return (
             <div>
-                This is the todo app
-                <button onClick={()=>this.addTodo()}>Add Todo</button>
+                <form onSubmit={(e)=>{this.handleFormSubmission(e)}}>
+                    <input type="text" value={this.state.value} onChange={(e)=>this.handleFormChange(e)}/>
+                    <input type="submit" value="+" disabled={!this.state.value}/>
+                </form>
+                
                 {this.props.todos.map((todoItem, i) => {
                     const styles = {
-                        textDecoration: `${todoItem.done ? 'line-through' : 'none'}`
+                        textDecoration: `${todoItem.done ? 'line-through' : 'none'}`,
+                        color: `${todoItem.done ? 'grey' : 'white'}`
                     }
                     return <p style={styles} key={i} onClick={()=>this.props.toggleDone(i)}>{todoItem.task}</p>
                 })}

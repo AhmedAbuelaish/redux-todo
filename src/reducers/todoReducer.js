@@ -1,10 +1,5 @@
 const initialState = {
-    todos: [
-        {
-        task: 'homework',
-        done: false
-        }
-    ]
+    todos: []
 }
 
 const todoReducer = (state = initialState, action) => {
